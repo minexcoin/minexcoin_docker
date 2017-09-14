@@ -1,0 +1,6 @@
+out/*
+!out/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
