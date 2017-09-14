@@ -1,0 +1,1 @@
+# minexcoin_docker
