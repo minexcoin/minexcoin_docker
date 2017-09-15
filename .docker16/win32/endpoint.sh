@@ -13,5 +13,5 @@ cd ..
 make clean
 find . -type f -name '*.o' -delete
 ./autogen.sh
-CONFIG_SITE=$PWD/depends/i686-w64-mingw32/share/config.site ./configure --prefix=/ --disable-tests
-make all -j 4 -i
+CONFIG_SITE=$PWD/depends/i686-w64-mingw32/share/config.site ./configure --prefix=/
+make all -j 4

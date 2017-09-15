@@ -18,6 +18,6 @@ cd /home/project/
 make clean
 find . -type f -name '*.o' -delete
 ./autogen.sh
-CONFIG_SITE=$PWD/depends/x86_64-apple-darwin11/share/config.site ./configure --prefix=/  --disable-tests
-make -i -j4
+CONFIG_SITE=$PWD/depends/x86_64-apple-darwin11/share/config.site ./configure --prefix=/
+make -j4
 make deploy
