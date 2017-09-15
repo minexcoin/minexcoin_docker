@@ -2,7 +2,8 @@
 cd /home/project/
 cd depends
 set +e
-make -j 12 || error=true
+make -j `nproc --all` || error=true
+exit
 if [ ${error} ]
 then
     exit -i
@@ -12,4 +13,4 @@ make clean
 find . -type f -name '*.o' -delete
 ./autogen.sh
 CONFIG_SITE=$PWD/depends/x86_64-pc-linux-gnu/share/config.site ./configure --prefix=/
-make all -j 12
+make all -j `nproc --all`
