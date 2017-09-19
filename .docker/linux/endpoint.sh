@@ -3,7 +3,6 @@ cd /home/project/
 cd depends
 set +e
 make -j `nproc --all` || error=true
-exit
 if [ ${error} ]
 then
     exit -i
