@@ -11,5 +11,5 @@ cd ..
 #make clean
 #find . -type f -name '*.o' -delete
 ./autogen.sh
-CONFIG_SITE=$PWD/depends/x86_64-pc-linux-gnu/share/config.site ./configure --prefix=/
+CONFIG_SITE=$PWD/depends/x86_64-pc-linux-gnu/share/config.site ./configure --prefix=/ --disable-tests
 make all -j `nproc --all`
