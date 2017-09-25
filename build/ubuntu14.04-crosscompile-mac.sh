@@ -5,7 +5,7 @@ docker run --user $(id -u) -v $(pwd)/minexcoin/:/home/project/ minex_coin_14_mac
 
 mkdir $(pwd)/minexcoin_docker/out/minex_coin_14_mac
 
-cp minexcoin/MinexWallet.dmg $(pwd)/out/minex_coin_14_mac/
+cp -v minexcoin/MinexWallet.dmg $(pwd)/minexcoin_docker/out/minex_coin_14_mac/
 cp minexcoin/src/minexcoin-cli $(pwd)/minexcoin_docker/out/minex_coin_14_mac/
 cp minexcoin/src/minexcoin-tx $(pwd)/minexcoin_docker/out/minex_coin_14_mac/
 cp minexcoin/src/bench/bench_bitcoin $(pwd)/minexcoin_docker/out/minex_coin_14_mac/
