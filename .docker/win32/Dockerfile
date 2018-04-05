@@ -5,7 +5,7 @@ RUN add-apt-repository ppa:bitcoin/bitcoin
 
 RUN apt update
 
-RUN apt-get --yes install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl autoconf ccache
+RUN apt-get --yes install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl autoconf ccache nsis
 RUN apt-get --yes install g++-mingw-w64-i686 mingw-w64-i686-dev
 
 WORKDIR /home/project

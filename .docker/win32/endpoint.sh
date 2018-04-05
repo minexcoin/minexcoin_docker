@@ -15,3 +15,4 @@ cd ..
 ./autogen.sh
 CONFIG_SITE=$PWD/depends/i686-w64-mingw32/share/config.site ./configure --prefix=/
 make all -i -j `nproc --all`
+make deploy
