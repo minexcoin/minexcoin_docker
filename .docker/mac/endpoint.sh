@@ -21,3 +21,7 @@ cd /home/project/
 CONFIG_SITE=$PWD/depends/x86_64-apple-darwin11/share/config.site ./configure --prefix=/
 make -i -j `nproc --all`
 make deploy
+
+#make install-strip DESTDIR=
+#make osx_volname
+#make deploydir

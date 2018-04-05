@@ -15,6 +15,8 @@ RUN apt --yes install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-
 
 RUN apt --yes install autoconf curl
 
+RUN apt --yes install gcc-multilib g++-multilib
+
 WORKDIR /home/project
 ADD ./endpoint.sh /endpoint.sh
 RUN chmod 755 /endpoint.sh
@@ -22,3 +24,5 @@ RUN chmod 755 /endpoint.sh
 RUN mkdir /.ccache/
 RUN mkdir /.ccache/tmp
 RUN chmod -R 0777 /.ccache/
+
+CMD /endpoint.sh
