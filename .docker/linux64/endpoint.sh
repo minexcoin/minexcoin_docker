@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 cd /home/project/
 
-INSTALLPATH=`pwd`/installed
+INSTALLPATH=`pwd`/installed/x86_64-linux-gnu
 
 cd depends
 set +e
 make HOST=x86_64-linux-gnu -j `nproc --all` || error=true
+exit;
 if [ ${error} ]
 then
     exit -i

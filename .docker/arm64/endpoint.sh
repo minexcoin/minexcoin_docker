@@ -4,6 +4,7 @@ cd depends
 
 set +e
 make HOST=aarch64-linux-gnu -j `nproc --all` || error=true
+exit;
 if [ ${error} ]
 then
     exit -i

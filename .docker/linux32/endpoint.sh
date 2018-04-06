@@ -6,6 +6,7 @@ INSTALLPATH=`pwd`/installed
 cd depends
 set +e
 make HOST=i686-pc-linux-gnu -j `nproc --all` || error=true
+exit;
 if [ ${error} ]
 then
     exit 1

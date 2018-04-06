@@ -4,6 +4,7 @@ cd depends
 
 set +e
 make HOST=arm-linux-gnueabihf -j `nproc --all` || error=true
+exit;
 if [ ${error} ]
 then
     exit -i

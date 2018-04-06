@@ -19,3 +19,5 @@ RUN chmod 755 /endpoint.sh
 RUN mkdir /.ccache/
 RUN mkdir /.ccache/tmp
 RUN chmod -R 0777 /.ccache/
+
+CMD /endpoint.sh

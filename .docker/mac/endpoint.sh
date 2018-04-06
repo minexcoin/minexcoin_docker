@@ -9,6 +9,7 @@ cd /home/project/depends
 
 set +e
 make HOST=x86_64-apple-darwin11 -j `nproc --all`|| error=true
+exit;
 if [ ${error} ]
 then
     exit -i
@@ -17,6 +18,8 @@ fi
 cd /home/project/
 #make clean
 #find . -type f -name '*.o' -delete
+
+
 ./autogen.sh
 CONFIG_SITE=$PWD/depends/x86_64-apple-darwin11/share/config.site ./configure --prefix=/
 make -i -j `nproc --all`
