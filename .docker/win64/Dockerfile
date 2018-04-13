@@ -10,7 +10,9 @@ RUN apt-get --yes install g++-mingw-w64-x86-64 mingw-w64-x86-64-dev
 
 WORKDIR /home/project
 ADD ./endpoint.sh /endpoint.sh
-RUN chmod 755 /endpoint.sh
+ADD ./endpoint.sh /signer.sh
+RUN chmod +x /endpoint.sh
+RUN chmod +x /signer.sh
 
 RUN mkdir /.ccache/
 RUN mkdir /.ccache/tmp

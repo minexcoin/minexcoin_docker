@@ -1,22 +1,25 @@
 #!/bin/bash
 cd /home/project/
-INSTALLPATH=`pwd`/installed/x86_64-w64-mingw32
 
-cd depends
+MAKEOPTS="-j `nproc --all`"
+HOSTS="x86_64-w64-mingw32"
+INSTALLPATH=`pwd`/installed/${HOSTS}
+
+
 set +e
-make HOST=x86_64-w64-mingw32 -j `nproc --all` || error=true
-exit;
+make HOST=${HOSTS} ${MAKEOPTS} || error=true
 if [ ${error} ]
 then
     exit -i
 fi
 
-cd ..
+./autogen.sh
+CONFIG_SITE=$PWD/depends/${HOSTS}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking
+
 make clean
 find . -type f -name '*.o' -delete
-./autogen.sh
-CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking
-make all -i -j `nproc --all`
+
+make ${MAKEOPTS}
 make -C src check-security
 make deploy
 
@@ -28,7 +31,7 @@ find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
 rm -rf ${INSTALLPATH}/lib/pkgconfig
 cd ${INSTALLPATH}
-zip -r x86_64-w64-mingw32.zip .
+zip -r minexcoin-${HOSTS}.zip .
 cd ../../
 
 

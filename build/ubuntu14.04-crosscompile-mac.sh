@@ -5,9 +5,5 @@ docker run --user $(id -u) -v $(pwd)/minexcoin/:/home/project/ minex_coin_mac /e
 
 mkdir $(pwd)/minexcoin_docker/out/minex_coin_mac
 
-#cp -v minexcoin/MinexWallet.dmg $(pwd)/minexcoin_docker/out/minex_coin_mac/
-#cp minexcoin/src/minexcoin-cli $(pwd)/minexcoin_docker/out/minex_coin_mac/
-#cp minexcoin/src/minexcoin-tx $(pwd)/minexcoin_docker/out/minex_coin_mac/
-#cp minexcoin/src/bench/bench_bitcoin $(pwd)/minexcoin_docker/out/minex_coin_mac/
-#cp minexcoin/src/minexcoind $(pwd)/minexcoin_docker/out/minex_coin_mac/
-#cp minexcoin/src/qt/minexcoin-qt $(pwd)/minexcoin_docker/out/minex_coin_mac/
+cp -v minexcoin/MinexWallet.dmg $(pwd)/minexcoin_docker/out/minex_coin_mac/
+cp -v minexcoin/installed/minexcoin-x86_64-apple-darwin11.tar.gz $(pwd)/minexcoin_docker/out/minex_coin_mac/

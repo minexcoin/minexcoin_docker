@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 cd /home/project/
+MAKEOPTS="-j `nproc --all`"
+HOSTS="i686-pc-linux-gnu"
+INSTALLPATH=`pwd`/installed/${HOSTS}
 
-INSTALLPATH=`pwd`/installed
 
-cd depends
 set +e
-make HOST=i686-pc-linux-gnu -j `nproc --all` || error=true
-exit;
+make HOST=${HOSTS} ${MAKEOPTS} || error=true
+
 if [ ${error} ]
 then
     exit 1
 fi
-cd ..
+./autogen.sh
+CONFIG_SITE=$PWD/depends/${HOSTS}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking
+
 make clean
 find . -type f -name '*.o' -delete
-./autogen.sh
-CONFIG_SITE=$PWD/depends/i686-pc-linux-gnu/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking
-make -j `nproc --all`
+
+make ${MAKEOPTS}
 make -C src check-security
 
 mkdir -p ${INSTALLPATH}
@@ -25,4 +27,4 @@ cd installed
 find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
 
-tar -czvf minexcoin-i686-pc-linux-gnu.tar.gz .
+tar -czvf minexcoin-${HOSTS}.tar.gz -C ${INSTALLPATH} .

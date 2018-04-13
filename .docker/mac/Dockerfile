@@ -9,7 +9,7 @@ RUN apt --yes install build-essential libtool autotools-dev automake pkg-config 
 
 RUN apt --yes install cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev python-setuptools
 
-RUN apt --yes install autoconf curl ccache
+RUN apt --yes install autoconf curl ccache faketime genisoimage
 
 
 WORKDIR /home/project
