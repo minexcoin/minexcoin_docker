@@ -18,12 +18,11 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-func getBlockInfo(block string) blockInfoResult {
+func rpcCall(jsonStr []byte) ([]byte, error) {
 	auth := fmt.Sprintf("%s:%s", *appConfig.RPCUser, *appConfig.RPCPassword)
 
 	base64Auth := base64.StdEncoding.EncodeToString([]byte(auth))
 
-	var jsonStr = []byte(fmt.Sprintf(`{"jsonrpc":"1.0","id":"curltext","method":"getblock","params":["%s",2]}`, block))
 	req, err := http.NewRequest("POST", *appConfig.RPCHost, bytes.NewBuffer(jsonStr))
 	req.Header.Add("Authorization", "Basic "+base64Auth)
 	req.Header.Set("Content-Type", "application/json")
@@ -31,11 +30,44 @@ func getBlockInfo(block string) blockInfoResult {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Panic(err)
+		log.Error(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	return body, err
+}
+
+func validateAddress(address string) bool {
+	type validateAddressTypeResult struct {
+		Isvalid bool `json:"isvalid"`
+	}
+
+	type validateAddressType struct {
+		Result validateAddressTypeResult `json:"result"`
+	}
+
+	var jsonStr = []byte(fmt.Sprintf(`{"jsonrpc":"1.0","id":"curltext","method":"validateaddress","params":["%s"]}`, address))
+	body, err := rpcCall(jsonStr)
+
+	if err != nil {
+		log.Error(err)
+		return false
+	}
+	log.Debug(string(body))
+
+	var jsonResult validateAddressType
+	json.Unmarshal(body, &jsonResult)
+
+	log.Debug(jsonResult)
+
+	return jsonResult.Result.Isvalid
+}
+
+func getBlockInfo(block string) blockInfoResult {
+	var jsonStr = []byte(fmt.Sprintf(`{"jsonrpc":"1.0","id":"curltext","method":"getblock","params":["%s",2]}`, block))
+	body, _ := rpcCall(jsonStr)
 
 	var jsonResult blockInfoResult
 	json.Unmarshal(body, &jsonResult)
@@ -247,6 +279,10 @@ func main() {
 				break
 			}
 
+			if validateAddress(args[1]) != true {
+				message = "address is not valid"
+				break
+			}
 			_, err := db.Get([]byte(args[1]), nil)
 			if err == nil {
 				message = "address exists"
