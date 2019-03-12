@@ -4,3 +4,8 @@ out/*
 logs/*
 !logs/.gitkeep
 
+
+minexcoin_notifier/minexcoin_notifier
+minexcoin_notifier/db
+minexcoin_notifier/test
+minexcoin_exporter/minexcoin_exporter
