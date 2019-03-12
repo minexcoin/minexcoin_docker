@@ -148,7 +148,7 @@ var appConfig = appConfigType{
 	kingpin.Flag(
 		"rpc.host",
 		"minexnode rpc address",
-	).Default("127.0.0.1:17786").String(),
+	).Default("http://127.0.0.1:17786").String(),
 	kingpin.Flag(
 		"rpc.user",
 		"minexnode rpc user",
