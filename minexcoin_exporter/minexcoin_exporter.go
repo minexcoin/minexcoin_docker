@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/btcsuite/btcd/rpcclient"
 	"github.com/prometheus/client_golang/prometheus"
@@ -11,37 +10,50 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-const version = "1.0.1"
+type appConfigType struct {
+	Version     string
+	listendAddr *string
+	metricsPath *string
+	RPCHost     *string
+	RPCUser     *string
+	RPCPassword *string
+}
 
-func getEnv(name string) string {
-	var envValue = os.Getenv(name)
-	if len(envValue) == 0 {
-		log.Fatal("env=" + name + " no value")
-	}
-	return envValue
+var appConfig = appConfigType{
+	"1.0.1",
+	kingpin.Flag(
+		"web.listen-address",
+		"Address on which to expose metrics and web interface.",
+	).Default(":8101").String(),
+	kingpin.Flag(
+		"web.telemetry-path",
+		"Path under which to expose metrics.",
+	).Default("/metrics").String(),
+	kingpin.Flag(
+		"rpc.host",
+		"minexnode rpc address",
+	).Default("http://127.0.0.1:17786").String(),
+	kingpin.Flag(
+		"rpc.user",
+		"minexnode rpc user",
+	).Default("user").String(),
+	kingpin.Flag(
+		"rpc.password",
+		"minexnode rpc password",
+	).Default("password").String(),
 }
 
 func main() {
-	var listendAddr = kingpin.Flag(
-		"web.listen-address",
-		"Address on which to expose metrics and web interface.",
-	).Default(":8101").String()
-
-	var metricsPath = kingpin.Flag(
-		"web.telemetry-path",
-		"Path under which to expose metrics.",
-	).Default("/metrics").String()
-
-	kingpin.Version(version)
+	kingpin.Version(appConfig.Version)
 	kingpin.HelpFlag.Short('h')
 	kingpin.Parse()
 
-	log.Info("Starting bitcoin_exporter ", version)
+	log.Info("Starting bitcoin_exporter ", appConfig.Version)
 
 	config := &rpcclient.ConnConfig{
-		Host:         getEnv("MNX_HOST"),
-		User:         getEnv("MNX_USER"),
-		Pass:         getEnv("MNX_PASS"),
+		Host:         *appConfig.RPCHost,
+		User:         *appConfig.RPCUser,
+		Pass:         *appConfig.RPCPassword,
 		DisableTLS:   true,
 		HTTPPostMode: true,
 	}
@@ -95,7 +107,7 @@ func main() {
 		},
 	))
 
-	http.Handle(*metricsPath, promhttp.Handler())
-	log.Info("Listening on", *listendAddr)
-	log.Fatal(http.ListenAndServe(*listendAddr, nil))
+	http.Handle(*appConfig.metricsPath, promhttp.Handler())
+	log.Info("Listening on", *appConfig.listendAddr)
+	log.Fatal(http.ListenAndServe(*appConfig.listendAddr, nil))
 }
