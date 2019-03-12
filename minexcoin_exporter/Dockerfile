@@ -1,7 +1,7 @@
 FROM golang:latest as build
 
 WORKDIR /go/src/minexcoin_exporter
-COPY minexcoin_exporter.go .
+COPY minexcoin_exporter/minexcoin_exporter.go .
 
 ENV GOOS=linux
 ENV GOARCH=amd64
