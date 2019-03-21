@@ -11,12 +11,13 @@ import (
 )
 
 type appConfigType struct {
-	Version     string
-	listendAddr *string
-	metricsPath *string
-	RPCHost     *string
-	RPCUser     *string
-	RPCPassword *string
+	Version        string
+	listendAddr    *string
+	metricsPath    *string
+	RPCHost        *string
+	RPCUser        *string
+	RPCPassword    *string
+	collectBalance *bool
 }
 
 var appConfig = appConfigType{
@@ -41,6 +42,10 @@ var appConfig = appConfigType{
 		"rpc.password",
 		"minexnode rpc password",
 	).Default("password").String(),
+	kingpin.Flag(
+		"collectBalance",
+		"export node balance",
+	).Default("false").Bool(),
 }
 
 func main() {
@@ -107,6 +112,21 @@ func main() {
 		},
 	))
 
+	if *appConfig.collectBalance {
+		prometheus.Register(prometheus.NewGaugeFunc(
+			prometheus.GaugeOpts{
+				Name: "bitcoin_node_balance",
+				Help: "node balance",
+			},
+			func() float64 {
+				balance, err := client.GetBalance("*")
+				if err != nil {
+					log.Fatal(err)
+				}
+				return float64(balance)
+			},
+		))
+	}
 	http.Handle(*appConfig.metricsPath, promhttp.Handler())
 	log.Info("Listening on", *appConfig.listendAddr)
 	log.Fatal(http.ListenAndServe(*appConfig.listendAddr, nil))
